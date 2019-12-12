@@ -2,14 +2,38 @@ package se.amandasjostrom.aoc.nineteen.day1
 
 class Day1 {
 
-    fun run() {
+    fun runPartOne() {
         val sumOfFuelForAllModules = sumOfFuelForAllModules(input)
         println("Day 1, assignment 1: $sumOfFuelForAllModules")
     }
 
     fun sumOfFuelForAllModules(input: String) = input.split("\n")
-                .map { x -> fuelForModule(Integer.valueOf(x)) }
+            .map { x -> fuelForModule(Integer.valueOf(x)) }
+            .sum()
+
+
+    fun runPartTwo(): Int {
+        return partTwo(input)
+    }
+
+    fun partTwo(input: String): Int {
+        val sum = input.split("\n")
+                .map { x -> Integer.valueOf(x) }
+                .map { fuelForModule(it) }
+                .map { addFuelForFuel(it) }
                 .sum()
+        println("Day 1, assignment 2: $sum")
+        return sum
+    }
+
+    private fun addFuelForFuel(fuelInput: Int): Int {
+        var sumTotal = fuelInput
+        var newFuel = fuelForModule(fuelInput)
+        if (newFuel > 0) {
+            sumTotal += addFuelForFuel(newFuel)
+        }
+        return sumTotal
+    }
 
     fun fuelForModule(module: Int) = module / 3 - 2
 

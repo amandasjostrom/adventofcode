@@ -19,4 +19,11 @@ class Day1Test {
         assertEquals("1969", 654, Day1().fuelForModule(1969))
         assertEquals("100756", 33583, Day1().fuelForModule(100756))
     }
+
+    @Test
+    fun partTwo() {
+        assertEquals( 2, Day1().partTwo("14"))
+        assertEquals( 966, Day1().partTwo("1969"))
+        assertEquals( 50346, Day1().partTwo("100756"))
+    }
 }
