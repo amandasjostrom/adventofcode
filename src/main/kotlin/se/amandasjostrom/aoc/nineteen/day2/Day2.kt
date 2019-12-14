@@ -1,5 +1,6 @@
 package se.amandasjostrom.aoc.nineteen.day2
 
+import se.amandasjostrom.aoc.nineteen.intcomputer.runIntComputer
 import java.lang.IllegalArgumentException
 
 class Day2 {
@@ -11,7 +12,7 @@ class Day2 {
 
         restoreGravityAssistProgram(integers)
 
-        runProgram(integers)
+        runIntComputer(integers)
 
         val value = integers[0]
         println("day 2 part 1, value at position 0 is: $value")
@@ -23,48 +24,36 @@ class Day2 {
         integers[2] = 2
     }
 
-    private fun runProgram(integers: MutableList<Int>) {
-        var position = 0
-        while (position < integers.size) {
-            val opcode = integers[position]
-            if (opcode == 99) {
-                break
-            }
+    fun partTwo(input: String): Int {
+        val integers: MutableList<Int> = input
+                .split(',')
+                .map { Integer.valueOf(it) }
+                .toMutableList()
 
-            when (opcode) {
-                99 -> return
-                1 -> {
-                    compute(integers, position, addAction)
+        val values = findNounAndVerb(integers)
+
+        val result = 100 * values.first + values.second
+        println("day 2 part 1, noun: ${values.first} & verb ${values.second}, result: $result")
+        return result
+    }
+
+    private fun findNounAndVerb(integers: MutableList<Int>): Pair<Int, Int> {
+        for (noun in 0..99) {
+            for (verb in 0..99) {
+                val copy = integers.toMutableList()
+                setNounAndVerb(copy, noun, verb)
+                runIntComputer(copy)
+                val value = copy[0]
+                if (value == 19690720) {
+                    return Pair(noun, verb)
                 }
-                2 -> {
-                    compute(integers, position, multiplyAction)
-                }
-                else -> throw IllegalArgumentException("opcode was not of legal values [1, 2, 99]")
-            }
-            position += 4
-        }
-    }
-
-    private fun compute(integers: MutableList<Int>, position: Int, action: Action) {
-        val firstValue = integers[integers[position + 1]]
-        val secondValue = integers[integers[position + 2]]
-        integers[integers[position + 3]] = action.execute(firstValue, secondValue)
-    }
-
-    companion object {
-        val addAction = object : Action {
-            override fun execute(a: Int, b: Int): Int {
-                return a + b
             }
         }
-        val multiplyAction = object : Action {
-            override fun execute(a: Int, b: Int): Int {
-                return a * b
-            }
-        }
+        throw IllegalArgumentException("no combination of noun and verb created expected outcome")
     }
-}
 
-interface Action {
-    fun execute(int1: Int, int2: Int): Int
+    private fun setNounAndVerb(integers: MutableList<Int>, noun: Int, verb: Int) {
+        integers[1] = noun
+        integers[2] = verb
+    }
 }
