@@ -1,4 +1,4 @@
-package se.amandasjostrom.aoc.nineteen
+package se.amandasjostrom.aoc.nineteen.day4
 
 import java.util.HashMap
 
@@ -11,6 +11,21 @@ class Day4 {
             println(current)
             val currentAsArray = current.toString().toCharArray()
             if (isIncreasing(currentAsArray) && hasDouble(currentAsArray)) {
+                count++
+            }
+            current++
+        }
+        println("day 4 part 1 result: $count")
+
+    }
+
+    fun partTwo(start: Int, stop: Int) {
+        var current: Int = start
+        var count: Int = 0
+        while (current <= stop) {
+            println(current)
+            val currentAsArray = current.toString().toCharArray()
+            if (isIncreasing(currentAsArray) && hasTrueDouble(currentAsArray)) {
                 count++
             }
             current++
