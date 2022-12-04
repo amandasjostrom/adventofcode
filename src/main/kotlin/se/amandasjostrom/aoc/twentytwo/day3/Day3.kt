@@ -21,13 +21,20 @@ class Day3 {
                 val compartment1 = it.subSequence(0, partLength).toString()
                 val compartment2 = it.subSequence(partLength, it.length).toString()
                 Pair(compartment1, compartment2)
-            }.map { findPriority(it) }
+            }.map { sharedItem(it) }
+            .map { findPriority(it) }
             .sum()
     }
 
-    private fun findPriority(compartments: Pair<String, String>): Int {
-        val sharedItem = compartments.first.first { compartments.second.contains(it) }
-        val base = sharedItem.toInt()
+    private fun sharedItem(compartments: Pair<String, String>) =
+        compartments.first.first { compartments.second.contains(it) }
+
+    fun runPartTwo(): Int {
+        return -1
+    }
+
+    private fun findPriority(item: Char): Int {
+        val base = item.toInt()
         val priority = if (base > 96) {
             // small letters
             base - 96
@@ -35,11 +42,6 @@ class Day3 {
             // big letters
             base - 64 + 26
         }
-        println("priority $priority for $sharedItem which got base $base in $compartments")
         return priority
-    }
-
-    fun runPartTwo(): Int {
-        return -1
     }
 }
