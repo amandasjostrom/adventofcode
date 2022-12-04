@@ -12,10 +12,11 @@ fun main(args: Array<String>) {
 
 class Day3 {
     private val input = input("${javaClass.simpleName.toLowerCase()}/input.txt")
+        .split("\n")
+        .filter { it.isNotEmpty() }
 
     fun runPartOne(): Int {
-        return input.split("\n")
-            .filter { it.isNotEmpty() }
+        return input
             .map {
                 val partLength = it.length / 2
                 val compartment1 = it.subSequence(0, partLength).toString()
@@ -30,7 +31,17 @@ class Day3 {
         compartments.first.first { compartments.second.contains(it) }
 
     fun runPartTwo(): Int {
-        return -1
+        return input
+            .chunked(3)
+            .map { findBadge(it) }
+            .map { findPriority(it) }
+            .sum()
+    }
+
+    private fun findBadge(group: List<String>): Char {
+        return group[0].first {
+            group[1].contains(it) && group[2].contains(it)
+        }
     }
 
     private fun findPriority(item: Char): Int {
