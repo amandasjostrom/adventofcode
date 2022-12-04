@@ -36,6 +36,23 @@ class Day2 {
             .sum()
     }
 
+    fun runPartTwo(): Int {
+        return input.split("\n")
+            .filter { it.isNotEmpty() }
+            .map { input ->
+                val opponent = RockPaperScissors.fromInput(input[0])
+                val you = when (val outcome = input[2]) {
+                    'X' -> loosingCombinations.first { it.opponent == opponent }.you
+                    'Y' -> opponent
+                    'Z' -> winningCombinations.first { it.opponent == opponent }.you
+                    else -> throw IllegalArgumentException("unexpected outcome in input: $outcome")
+                }
+                Round(opponent = opponent, you = you)
+            }
+            .map { score(it) }
+            .sum()
+    }
+
     private fun score(round: Round): Int {
         val resultScore = if (winningCombinations.contains(round)) {
             6
@@ -52,10 +69,6 @@ class Day2 {
         }
 
         return resultScore + shapeScore
-    }
-
-    fun runPartTwo(): Int {
-        return -1
     }
 }
 
