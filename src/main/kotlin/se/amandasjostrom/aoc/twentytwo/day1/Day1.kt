@@ -1,5 +1,7 @@
 package se.amandasjostrom.aoc.twentytwo.day1
 
+import se.amandasjostrom.aoc.twentytwo.input
+
 fun main(args: Array<String>) {
     val resultPartOne = Day1().runPartOne()
     println("result part one $resultPartOne")
@@ -10,6 +12,7 @@ fun main(args: Array<String>) {
 
 
 class Day1 {
+    private val input = input("${javaClass.simpleName.toLowerCase()}/input.txt")
 
     // mostCaloriesCarried
     fun runPartOne(): Int {
@@ -36,9 +39,4 @@ class Day1 {
     private fun getNumberOfCaloriesForElf(it: String) = it.split("\n")
         .filter { it.isNotEmpty() }
         .sumBy { it.toInt() }
-
-    companion object {
-        private val input: String = Day1::class.java.getResource("/twentytwo/day1/input.txt")?.readText()
-            ?: throw IllegalArgumentException("file not found")
-    }
 }
